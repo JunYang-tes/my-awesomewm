@@ -7,6 +7,7 @@
 (local { : assign! } (require :utils.table))                    
 (local ui (require :utils.ui)) 
 (local signal (require :utils.signal))                         
+(local volume (require :components.volume)) 
 
 (local bar-height 40)
 (local bar-offset-y 30) 
@@ -65,7 +66,8 @@
                             (do 
                               (local systray (wibox.widget.systray)) 
                               (systray:set_base_size 20) 
-                              systray)))))) 
+                              systray)) 
+                          (volume.widget))))) 
         :border_width 0
         :bg :#fff00000
         :type "dock" 
@@ -87,6 +89,7 @@
 (fn toggle-visible []
   (local screen (awful.screen.focused)) 
   (local {: width} (function-bar:geometry))
+  (signal.emit "volumn::update")
   (assign! 
     function-bar 
     {:visible (not function-bar.visible) 
